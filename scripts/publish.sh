@@ -100,8 +100,9 @@ if [ "$dry_run" = false ] && [ "$changed" = true ]; then
     status=0
     tonk --space "$space" push || status=$?
     [ "$status" -eq 0 ] && break
-    [ "$status" -eq 3 ] && [ "$attempt" -lt "$attempts" ] ||
+    if [ "$status" -ne 3 ] || [ "$attempt" -ge "$attempts" ]; then
       fail "the documents were committed but could not be pushed (exit $status, attempt $attempt of $attempts)"
+    fi
     attempt=$((attempt + 1))
     echo "the branch moved; pulling and pushing again"
   done

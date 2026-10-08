@@ -24,5 +24,21 @@ esac
 export TONK_INSTALL_DIR="$bin"
 curl -fsSL https://github.com/tonk-labs/tonk/releases/latest/download/install.sh | sh
 
+# tonk's Linux build is linked by Nix: its ELF interpreter is a /nix/store
+# path that a stock runner does not have, so the kernel refuses to start it
+# ("required file not found"). Start it through the system loader instead.
+# Its libraries (libc, libm, libgcc_s) resolve from the system; the build
+# needs glibc 2.39, which ubuntu-24.04 has.
+if [ "$(uname -s)" = Linux ] && ! "$bin/tonk" --version >/dev/null 2>&1; then
+  loader=/lib64/ld-linux-x86-64.so.2
+  if ! [ -x "$loader" ] || ! "$loader" "$bin/tonk" --version >/dev/null 2>&1; then
+    echo "::error::the tonk binary does not run on this runner, even through $loader"
+    exit 1
+  fi
+  mv "$bin/tonk" "$bin/tonk.elf"
+  printf '#!/bin/sh\nexec %s %s "$@"\n' "$loader" "$bin/tonk.elf" >"$bin/tonk"
+  chmod 0755 "$bin/tonk"
+fi
+
 echo "$bin" >>"$GITHUB_PATH"
 "$bin/tonk" --version
