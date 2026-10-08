@@ -92,7 +92,7 @@ when read.
 | `attempts` | `5` | Push attempts when the branch keeps moving. |
 | `dry-run` | `false` | Evaluate every document without committing or pushing. Useful on pull requests. |
 | `agent-name` | `GitHub Actions (<owner>/<repo>)` | Label shown for this connection in the space owner's settings. |
-| `tonk-version` | `latest` | `latest`, `staging`, or a release tag such as `v0.7.0`. |
+| `tonk-version` | `latest` | `latest`, `staging`, or a release tag, such as `v0.7.0` or a pinned build's `tonk-<hash>`. |
 
 ## Outputs
 
