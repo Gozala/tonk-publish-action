@@ -6,4 +6,4 @@ post!:
   this: id:post-hello
   title: Hello from GitHub
   body: !include/text ./hello.md
-  cover: !include/blob ../assets/cover.png
+  cover: !include/asset ../assets/cover.png

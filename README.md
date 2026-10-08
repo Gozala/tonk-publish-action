@@ -49,7 +49,7 @@ document:
 | --- | --- |
 | `!include/text ./post.md` | the file's text |
 | `!include ./data.bin` | the file's bytes, inline in the fact |
-| `!include/blob ../assets/cover.png` | a content-addressed `asset:<hash>` reference; the file is stored as a blob, with its content type and name, in the same commit, so the standard media view renders it |
+| `!include/asset ../assets/cover.png` | a content-addressed `asset:<hash>` reference, so declare the field `as: entity`. The file is stored as an asset in the same commit, with its media type and name, and the standard media view renders it (`model=tonk:asset`) |
 
 Files that no document includes are not published.
 

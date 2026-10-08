@@ -14,7 +14,7 @@ attribute!: &post-body
   cardinality: one
 
 attribute!: &post-cover
-  description: Cover image of a post, a blob reference
+  description: Cover image of a post, an asset reference
   the: xyz.example.post/cover
   as: entity
   cardinality: one
@@ -33,6 +33,6 @@ view!:
     ui: |
       <article>
         <h1>{title}</h1>
-        <tonk-display entity={cover} model=tonk:blob></tonk-display>
+        <tonk-display entity={cover} model=tonk:asset></tonk-display>
         <tonk-prose readonly>{body}</tonk-prose>
       </article>
