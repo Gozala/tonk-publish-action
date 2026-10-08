@@ -9,6 +9,11 @@ on:
 permissions:
   contents: read
 
+env:
+  # A pinned tonk build with multi-file `eval` and `!include/asset`, until
+  # a release carries them; then `staging` or `latest`.
+  TONK_VERSION: tonk-kdp1zi8hiz1j
+
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -25,8 +30,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install tonk
-        env:
-          TONK_VERSION: staging
         run: scripts/install.sh
       - name: Publish the example to a local space
         env:
@@ -58,14 +61,14 @@ jobs:
         with:
           invite: ${{ secrets.TONK_TEST_INVITE }}
           directory: example/tonk
-          tonk-version: staging
+          tonk-version: ${{ env.TONK_VERSION }}
       - id: second
         if: env.HAS_INVITE == 'true'
         uses: ./
         with:
           invite: ${{ secrets.TONK_TEST_INVITE }}
           directory: example/tonk
-          tonk-version: staging
+          tonk-version: ${{ env.TONK_VERSION }}
       - name: The second publish is a no-op
         if: env.HAS_INVITE == 'true'
         run: test "${{ steps.second.outputs.changed }}" = false && test "${{ steps.second.outputs.pushed }}" = false
